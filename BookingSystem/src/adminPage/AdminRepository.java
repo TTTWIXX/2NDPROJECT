@@ -37,6 +37,7 @@ public class AdminRepository {
 
 
 
+
     // 수락한 예약정보 객체를 save 하는 기능
     void saveAcceptReservation(){
         try(FileOutputStream oops=new FileOutputStream("BookingSystem/src/saveFile/acceptReservation.txt")){

@@ -75,13 +75,7 @@ public class MemberShipUserView {
             }
         }
 
-        // 거주지 입력
-        System.out.println("거주지를 입력하세요");
-        showArea();
-//        System.out.println("강남구 // 강동구 // 강서구 // 광진구 // 구로구 // 동대문구 // 동작구 //\n해당 구에 거주하시는 분은 혜택을 받으실수있습니다.");
-        int areaNum = Integer.parseInt(input("\n# 번호를 입력하세요 >> "));
-        String userArea = callListArea().get(areaNum - 1);
-        System.out.println(userArea);
+        String userArea = getUserArea();
 
         // 전화번호 입력
         String userPhoneNum;
@@ -116,6 +110,24 @@ public class MemberShipUserView {
         urp.register(userInfo);
 
 
+    }
+
+    private String getUserArea() {
+        // 거주지 입력
+        System.out.println("거주지를 입력하세요");
+        String userArea=null;
+        showArea();
+//        System.out.println("강남구 // 강동구 // 강서구 // 광진구 // 구로구 // 동대문구 // 동작구 //\n해당 구에 거주하시는 분은 혜택을 받으실수있습니다.");
+        int areaNum = Integer.parseInt(input("\n# 번호를 입력하세요 >> "));
+       if(areaNum>10){
+           System.out.println("정확한 값을 입력해주세요");
+           getUserArea();
+       }else{
+           userArea = callListArea().get(areaNum - 1);
+           System.out.println(userArea);
+           return userArea;
+       }
+        return userArea;
     }
 
     /**

@@ -45,9 +45,9 @@ public class AdminPreReservedView {
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(userInfo);
-            for (SelectedReserv selectedReserv1 : userInfo) {
-                System.out.println(selectedReserv1 + "\n");
-            }
+//            for (SelectedReserv selectedReserv1 : userInfo) {
+//                System.out.println(selectedReserv1 + "\n");
+//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (RuntimeException e) {

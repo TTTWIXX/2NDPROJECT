@@ -83,7 +83,7 @@ public class AdminPreReservedView {
 //             userInfo = (List<SelectedReserv>)ois.readObject();
 //            ;
 //            System.out.println(userInfo);
-            System.out.println("여기");
+
             selectedReservList = (List<SelectedReserv>) ois.readObject();
 
         } catch (FileNotFoundException ex) {

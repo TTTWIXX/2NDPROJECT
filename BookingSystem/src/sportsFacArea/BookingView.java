@@ -3,6 +3,7 @@ package sportsFacArea;
 import adminPage.AdminRepository;
 import login.UserInfo;
 import memberShipUserSystem.MemberShipUserInfo;
+import memberShipUserSystem.MemberShipUserView;
 import mypage.MyPageView;
 import sportsFacArea.sportrentlist.BasketRentList;
 import sportsFacArea.sportrentlist.SoccerRentList;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static login.Utility.input;
 
 public class BookingView {
+    MemberShipUserView memberView;
 
     static SportAreaRepository repository;
     static SportBooking booking;
@@ -49,19 +51,12 @@ public class BookingView {
 
     public void areaStart() { // 지역 정하기
         System.out.println("\n        [ 지역 예약 ]");
-        repository.showArea(); // 지역리스트 출력
-        while (true) {
-            try {
-                int areaNum = Integer.parseInt(input("\n# 번호로 입력하세요>> "));
-                repository.setAreaListIndex(areaNum);
-                reserv.setUserPlace(repository.callListArea().get(areaNum - 1));
-            } catch (NumberFormatException e) {
-                System.out.println("잘못된 입력입니다");
-                areaStart(); // 다시 지역정하기
-            }
-            sportStart();
-        }
+        memberView = new MemberShipUserView();
+        memberView.getUserArea();
+        sportStart();
     }
+
+
 
     public void sportStart() { // 스포츠 종목 정하기
         System.out.println("\n        [ 구장 예약 ]");
@@ -116,19 +111,19 @@ public class BookingView {
     }
 
     public void denyDate(String inputDay) { // 예약 대기,완료된 날짜는 선택 못하게 하는 메서드
-       if(myPageView.loadApprovedList()!=null) {
-           List<SelectedReserv> selectedReservList = myPageView.loadApprovedList(); // 예약완료된 세이브파일 불러옴
-           for (SelectedReserv selectedReserv : selectedReservList) {
-               if (selectedReserv.getUserName().equals(myInfo.getUserName())
-                       && selectedReserv.getUserPlace().equals(reserv.getUserPlace())
-                       && selectedReserv.getUserSport().equals(reserv.getUserSport())
-                       && selectedReserv.getUserDate().equals(inputDay)) {
-                   System.out.printf("\n%s님은 이미 5월 %s일을 예약하셨습니다!\n\n", myInfo.getUserName(), inputDay);
-                   bookingFac(); // 다시 예약 날짜 정하기
-               }
-           }
-       }
-        if(adminRepository.loadReservationFile()!=null) {
+        if (myPageView.loadApprovedList() != null) {
+            List<SelectedReserv> selectedReservList = myPageView.loadApprovedList(); // 예약완료된 세이브파일 불러옴
+            for (SelectedReserv selectedReserv : selectedReservList) {
+                if (selectedReserv.getUserName().equals(myInfo.getUserName())
+                        && selectedReserv.getUserPlace().equals(reserv.getUserPlace())
+                        && selectedReserv.getUserSport().equals(reserv.getUserSport())
+                        && selectedReserv.getUserDate().equals(inputDay)) {
+                    System.out.printf("\n%s님은 이미 5월 %s일을 예약하셨습니다!\n\n", myInfo.getUserName(), inputDay);
+                    bookingFac(); // 다시 예약 날짜 정하기
+                }
+            }
+        }
+        if (adminRepository.loadReservationFile() != null) {
             List<SelectedReserv> reservationFile = adminRepository.loadReservationFile(); // 예약 대기 세이브파일
             for (SelectedReserv selectedReserv : reservationFile) {
                 if (selectedReserv.getUserName().equals(myInfo.getUserName())
@@ -160,7 +155,7 @@ public class BookingView {
         int inputTime = 0;
         try {
             inputTime = Integer.parseInt(input("\n# 예약할 시간을 번호로 입력 >> "));
-            if (inputTime > 6 || inputTime < 1){
+            if (inputTime > 6 || inputTime < 1) {
                 System.out.println("잘못된 입력입니다");
                 timeInterval(inputDay); // 다시 예약 시간 입력받기
             }
@@ -178,8 +173,8 @@ public class BookingView {
             if (selectedReserv.getUserPlace().equals(reserv.getUserPlace())
                     && selectedReserv.getUserSport().equals(reserv.getUserSport())
                     && selectedReserv.getUserDate().equals(inputDay)
-                && selectedReserv.getUserTimeIndex()== inputTime) {
-                System.out.printf("이미 5월 %s일 %s 시간대는 예약완료상태입니다!\n\n", inputDay,new TimeList().dateList.get(inputTime-1));
+                    && selectedReserv.getUserTimeIndex() == inputTime) {
+                System.out.printf("이미 5월 %s일 %s 시간대는 예약완료상태입니다!\n\n", inputDay, new TimeList().dateList.get(inputTime - 1));
                 timeInterval(inputDay); // 다시 예약 시간대 입력받기
             }
         }
